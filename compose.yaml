@@ -1,0 +1,23 @@
+services:
+  proxy:
+    image: docker.io/traefik:v3.1.2
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - ${podmansock}:/var/run/docker.sock
+      - ./config/traefik/:/etc/traefik/config:ro
+      - ./config/dynamic/dynamic-conf.yaml:/dynamic-conf.yaml
+    networks:
+      - externa
+  
+  cms:
+    image: docker.io/traefik/whoami
+    # labels:
+    #   - traefik.http.routers.cms.rule=Host(`cms.ddm.uem.br`)
+    networks:
+      - externa
+
+networks:
+  externa:
