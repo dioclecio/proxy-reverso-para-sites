@@ -1,0 +1,13 @@
+http:
+  routers:
+    ddm:
+      rule: "Host(`ddm.uem.br`)"
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: meuCertificado
+  services:
+    ddm:
+      loadBalancer:
+        servers:
+          - url: "ddm:80"

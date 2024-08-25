@@ -4,18 +4,22 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 443:443/udp
       - 8080:8080
+    command:
+      - "--configfile=/etc/traefik/config/traefik.yaml"
     volumes:
       - ${podmansock}:/var/run/docker.sock
+      - ./config/letsencrypt:/letsencrypt:rw
       - ./config/traefik/:/etc/traefik/config:ro
-      - ./config/dynamic/dynamic-conf.yaml:/dynamic-conf.yaml
+      # - ./config/dynamic/dynamic-conf.yaml:/dynamic-conf.yaml
     networks:
       - externa
   
-  cms:
-    image: docker.io/traefik/whoami
-    # labels:
-    #   - traefik.http.routers.cms.rule=Host(`cms.ddm.uem.br`)
+  ddm:
+    image: docker.io/nginx
+    ports:
+      - 9090:80
     networks:
       - externa
 
