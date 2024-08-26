@@ -2,7 +2,7 @@
 #     level: DEBUG
 
 api:
-  insecure: false
+  insecure: true
   dashboard: true
 
 entryPoints:

@@ -2,8 +2,8 @@ services:
   proxy:
     image: docker.io/traefik:v3.1.2
     ports:
-      - 80:80
-      - 443:443
+      - 8080:80
+      - 8443:443
       - 8888:8080
     command:
       - "--configfile=/etc/traefik/config/traefik.yaml"
