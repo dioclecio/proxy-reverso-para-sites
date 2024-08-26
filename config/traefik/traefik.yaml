@@ -1,5 +1,5 @@
-log:
-    level: DEBUG
+# log:
+#     level: DEBUG
 
 api:
   insecure: true
@@ -17,7 +17,6 @@ entryPoints:
 
 providers:
   docker:
-    watch: true
     exposedByDefault: false
   file:
     directory: "/etc/traefik/config"
@@ -26,9 +25,10 @@ providers:
 certificatesResolvers:
   meuCertificado:
     acme:
-      email: dioclecio@hotmail.com
+      email: dmcamelo@uem.br
       storage: /letsencrypt/acme.json
       # dnsChallenge: 
       #   provider: cloudflare 
       httpChallenge:
+        # watch: true
         entryPoint: web

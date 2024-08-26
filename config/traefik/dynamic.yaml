@@ -1,13 +1,33 @@
 http:
   routers:
-    ddm:
-      rule: "Host(`ddm.uem.br`)"
+    ddm0:
+      entryPoints:
+        - web
+      middlewares:
+        - httpsRedirect
+      service: ddmServ
+      rule: Host(`ddm.uem.br`) || Host(`www.ddm.uem.br`)
+    ddm1:
       entryPoints:
         - websecure
+      middlewares:
+        - noWebRedirect
+      service: ddmServ
+      rule: Host(`ddm.uem.br`) || Host(`www.ddm.uem.br`)
       tls:
+        # options: default
         certResolver: meuCertificado
+  middlewares:
+    httpsRedirect:
+      redirectScheme:
+        scheme: https
+    noWebRedirect:
+      redirectregex:
+        regex: ^https?://www.ddm.uem.br/(.*)
+        replacement: https://ddm.uem.br/${1}
+        permanent: true
   services:
-    ddm:
+    ddmServ:
       loadBalancer:
         servers:
-          - url: "ddm:80"
+          - url: http://ddm:80
