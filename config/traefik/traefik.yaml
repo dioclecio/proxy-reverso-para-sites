@@ -2,7 +2,7 @@
 #     level: DEBUG
 
 api:
-  insecure: true
+  insecure: false
   dashboard: true
 
 entryPoints:
@@ -32,3 +32,9 @@ certificatesResolvers:
       httpChallenge:
         # watch: true
         entryPoint: web
+
+experimental:
+  plugins:
+    plugin-simplecache:
+      moduleName: "github.com/traefik/plugin-simplecache"
+      version: "v0.2.1"

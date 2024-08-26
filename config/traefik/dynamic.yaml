@@ -12,6 +12,7 @@ http:
         - websecure
       middlewares:
         - noWebRedirect
+        - cacheRedirect
       service: ddmServ
       rule: Host(`ddm.uem.br`) || Host(`www.ddm.uem.br`)
       tls:
@@ -26,6 +27,10 @@ http:
         regex: ^https?://www.ddm.uem.br/(.*)
         replacement: https://ddm.uem.br/${1}
         permanent: true
+    cacheRedirect:
+      plugin:
+        plugin-simplecache:
+          path: /tmp
   services:
     ddmServ:
       loadBalancer:

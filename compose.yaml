@@ -2,8 +2,8 @@ services:
   proxy:
     image: docker.io/traefik:v3.1.2
     ports:
-      - 8080:80
-      - 8443:443
+      - 80:80
+      - 443:443
       - 8888:8080
     command:
       - "--configfile=/etc/traefik/config/traefik.yaml"
@@ -14,6 +14,9 @@ services:
       # - ./config/dynamic/dynamic-conf.yaml:/dynamic-conf.yaml
     networks:
       - externa
+    security_opt:
+      - "label=disable"
+
   
   ddm:
     image: docker.io/nginx
@@ -22,6 +25,9 @@ services:
     restart: always
     volumes:
       - ${pathDDM}:/usr/share/nginx/html:ro
+      - ./config/nginx:/etc/nginx/conf.d:ro
+    security_opt:
+      - "label=disable"  
 
 networks:
   externa:
