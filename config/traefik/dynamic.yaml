@@ -6,7 +6,7 @@ http:
       middlewares:
         - httpsRedirect
       service: ddmServ
-      rule: Host(`ddm.uem.br`) || Host(`www.ddm.uem.br`)
+      rule: Host(`ddm.localhost`) || Host(`www.ddm.localhost`)
     ddm1:
       entryPoints:
         - websecure
@@ -14,18 +14,26 @@ http:
         - noWebRedirect
         - cacheRedirect
       service: ddmServ
-      rule: Host(`ddm.uem.br`) || Host(`www.ddm.uem.br`)
+      rule: Host(`ddm.localhost`) || Host(`www.ddm.localhost`)
       tls:
-        # options: default
         certResolver: meuCertificado
+    aahu0:
+      entryPoints:
+        - web
+      middlewares:
+        - httpsRedirect
+      service: aahuServ
+      rule: Host(`aahu.localhost`) || Host(`www.aahu.localhost`)
+    aahu1:
+    #### Continuar a montar o aahu2
   middlewares:
     httpsRedirect:
       redirectScheme:
         scheme: https
     noWebRedirect:
       redirectregex:
-        regex: ^https?://www.ddm.uem.br/(.*)
-        replacement: https://ddm.uem.br/${1}
+        regex: ^https?://www.ddm.localhost/(.*)
+        replacement: https://ddm.localhost/${1}
         permanent: true
     cacheRedirect:
       plugin:

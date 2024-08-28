@@ -29,5 +29,19 @@ services:
     security_opt:
       - "label=disable"  
 
+  aahu:
+    image: docker.io/traefik/whoami
+    networks:
+      - externa
+    security_opt:
+      - "label=disable"
+
+  cms:
+    image: docker.io/traefik/whoami
+    networks:
+      - externa
+    security_opt:
+      - "label=disable"
+
 networks:
   externa:
