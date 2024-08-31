@@ -11,12 +11,12 @@ http:
       entryPoints:
         - websecure
       middlewares:
-        - noWebRedirect
+        - ddmWebRedirect
         - cacheRedirect
       service: ddmServ
       rule: Host(`ddm.localhost`) || Host(`www.ddm.localhost`)
       tls:
-        certResolver: meuCertificado
+        certResolver: ddmCertificado
     aahu0:
       entryPoints:
         - web
@@ -25,22 +25,67 @@ http:
       service: aahuServ
       rule: Host(`aahu.localhost`) || Host(`www.aahu.localhost`)
     aahu1:
-    #### Continuar a montar o aahu2
+      entryPoints:
+        - websecure
+      middlewares:
+        - aahuWebRedirect
+        - cacheRedirect
+      service: aahuServ
+      rule: Host(`aahu.localhost`) || Host(`www.aahu.localhost`)
+      tls:
+        certResolver: aahuCertificado
+    cms0:
+      entryPoints:
+        - web
+      middlewares:
+        - httpsRedirect
+      service: api@internal
+      rule: Host(`cms.localhost`) || Host(`www.cms.localhost`)
+    cms1:
+      entryPoints:
+        - websecure
+      middlewares:
+        - cmsWebRedirect
+        - dashboardAuth
+      service: api@internal
+      rule: Host(`cms.localhost`) || Host(`www.cms.localhost`)
+      tls:
+        certResolver: cmsCertificado
+      
+
   middlewares:
     httpsRedirect:
       redirectScheme:
         scheme: https
-    noWebRedirect:
+    ddmWebRedirect:
       redirectregex:
         regex: ^https?://www.ddm.localhost/(.*)
         replacement: https://ddm.localhost/${1}
+        permanent: true
+    aahuWebRedirect:
+      redirectregex:
+        regex: ^https?://www.aahu.localhost/(.*)
+        replacement: https://aahu.localhost/${1}
+        permanent: true
+    cmsWebRedirect:
+      redirectregex:
+        regex: ^https?://www.cms.localhost/(.*)
+        replacement: https://cms.localhost/${1}
         permanent: true
     cacheRedirect:
       plugin:
         plugin-simplecache:
           path: /tmp
+    dashboardAuth:
+      basicAuth:
+        usersFile: "/etc/traefik/config/users.md"
   services:
     ddmServ:
       loadBalancer:
         servers:
           - url: http://ddm:80
+    aahuServ:
+      loadBalancer:
+        servers:
+          - url: http://aahu:80
+    

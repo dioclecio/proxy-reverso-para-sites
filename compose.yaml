@@ -2,16 +2,14 @@ services:
   proxy:
     image: docker.io/traefik:v3.1.2
     ports:
-      - 8080:80
-      - 8443:443
-      - 8888:8080
+      - 80:80
+      - 443:443
     command:
       - "--configfile=/etc/traefik/config/traefik.yaml"
     volumes:
       - ${podmansock}:/var/run/docker.sock
       - ./config/letsencrypt:/letsencrypt:rw
       - ./config/traefik/:/etc/traefik/config:ro
-      # - ./config/dynamic/dynamic-conf.yaml:/dynamic-conf.yaml
     networks:
       - externa
     security_opt:
@@ -19,7 +17,7 @@ services:
 
   
   ddm:
-    image: docker.io/nginx
+    image: docker.io/nginx:1.27.1
     networks:
       - externa
     restart: always
@@ -36,12 +34,6 @@ services:
     security_opt:
       - "label=disable"
 
-  cms:
-    image: docker.io/traefik/whoami
-    networks:
-      - externa
-    security_opt:
-      - "label=disable"
 
 networks:
   externa:

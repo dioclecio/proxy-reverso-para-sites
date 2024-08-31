@@ -1,8 +1,9 @@
 # log:
 #     level: DEBUG
+# accesslog=true
 
 api:
-  insecure: true
+  # insecure: true
   dashboard: true
 
 entryPoints:
@@ -23,14 +24,29 @@ providers:
     watch: true
 
 certificatesResolvers:
-  meuCertificado:
+  ddmCertificado:
     acme:
       email: dmcamelo@uem.br
-      storage: /letsencrypt/acme.json
+      storage: /letsencrypt/ddm.json
       # dnsChallenge: 
       #   provider: cloudflare 
       httpChallenge:
         # watch: true
+        entryPoint: web
+  aahuCertificado:
+    acme:
+      email: dmcamelo@uem.br
+      storage: /letsencrypt/aahu.json
+      dnsChallenge: 
+        provider: cloudflare 
+      # httpChallenge:
+      #   # watch: true
+      #   entryPoint: web
+  cmsCertificado:
+    acme:
+      email: dmcamelo@uem.br
+      storage: /letsencrypt/cms.json
+      httpChallenge:
         entryPoint: web
 
 experimental:
